@@ -1,3 +1,4 @@
+# coding=utf-8
 # Copyright (c) 2017-present, Facebook, Inc.
 # All rights reserved.
 #
@@ -16,14 +17,7 @@ logger = getLogger()
 
 
 AVAILABLE_ATTR = [
-    "5_o_Clock_Shadow", "Arched_Eyebrows", "Attractive", "Bags_Under_Eyes", "Bald",
-    "Bangs", "Big_Lips", "Big_Nose", "Black_Hair", "Blond_Hair", "Blurry", "Brown_Hair",
-    "Bushy_Eyebrows", "Chubby", "Double_Chin", "Eyeglasses", "Goatee", "Gray_Hair",
-    "Heavy_Makeup", "High_Cheekbones", "Male", "Mouth_Slightly_Open", "Mustache",
-    "Narrow_Eyes", "No_Beard", "Oval_Face", "Pale_Skin", "Pointy_Nose",
-    "Receding_Hairline", "Rosy_Cheeks", "Sideburns", "Smiling", "Straight_Hair",
-    "Wavy_Hair", "Wearing_Earrings", "Wearing_Hat", "Wearing_Lipstick",
-    "Wearing_Necklace", "Wearing_Necktie", "Young"
+    "muster_gebluemt/floral", "muster_gestreift"
 ]
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
@@ -50,10 +44,10 @@ def load_images(params):
     Load celebA dataset.
     """
     # load data
-    images_filename = 'images_%i_%i_20000.pth' if params.debug else 'images_%i_%i.pth'
+    images_filename = 'images_kleider_%i_%i_20000.pth' if params.debug else 'images_kleider_%i_%i.pth'
     images_filename = images_filename % (params.img_sz, params.img_sz)
+    attributes = torch.load(os.path.join(DATA_PATH, 'attributes_kleider.pth'))
     images = torch.load(os.path.join(DATA_PATH, images_filename))
-    attributes = torch.load(os.path.join(DATA_PATH, 'attributes.pth'))
 
     # parse attributes
     attrs = []
@@ -67,8 +61,8 @@ def load_images(params):
         valid_index = 15000
         test_index = 20000
     else:
-        train_index = 162770
-        valid_index = 162770 + 19867
+        train_index = 8000
+        valid_index = 8000 + 1000
         test_index = len(images)
     train_images = images[:train_index]
     valid_images = images[train_index:valid_index]

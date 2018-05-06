@@ -27,7 +27,7 @@ parser.add_argument("--img_sz", type=int, default=256,
                     help="Image sizes (images have to be squared)")
 parser.add_argument("--img_fm", type=int, default=3,
                     help="Number of feature maps (1 for grayscale, 3 for RGB)")
-parser.add_argument("--attr", type=attr_flag, default="Smiling",
+parser.add_argument("--attr", type=attr_flag, default="muster_gebluemt/floral,muster_gestreift",
                     help="Attributes to classify")
 parser.add_argument("--init_fm", type=int, default=32,
                     help="Number of initial filters in the encoder")
@@ -45,7 +45,7 @@ parser.add_argument("--optimizer", type=str, default="adam",
                     help="Classifier optimizer (SGD / RMSprop / Adam, etc.)")
 parser.add_argument("--clip_grad_norm", type=float, default=5,
                     help="Clip gradient norms (0 to disable)")
-parser.add_argument("--n_epochs", type=int, default=1000,
+parser.add_argument("--n_epochs", type=int, default=50,
                     help="Total number of epochs")
 parser.add_argument("--epoch_size", type=int, default=50000,
                     help="Number of samples per epoch")
@@ -53,6 +53,7 @@ parser.add_argument("--reload", type=str, default="",
                     help="Reload a pretrained classifier")
 parser.add_argument("--debug", type=bool_flag, default=False,
                     help="Debug mode (only load a subset of the whole dataset)")
+parser.add_argument("--dump_path", type=str, default="models/fashion/")
 params = parser.parse_args()
 
 # check parameters
@@ -126,7 +127,7 @@ for n_epoch in range(params.n_epochs):
         best_accu = np.mean(valid_accu)
         logger.info('Best validation average accuracy: %.5f' % best_accu)
         save_model('best')
-    elif n_epoch % 10 == 0 and n_epoch > 0:
+    elif n_epoch % 1 == 0 and n_epoch > 0:
         save_model('periodic-%i' % n_epoch)
 
     logger.info('End of epoch %i.\n' % n_epoch)

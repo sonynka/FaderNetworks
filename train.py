@@ -1,9 +1,12 @@
+# coding=utf-8
 # Copyright (c) 2017-present, Facebook, Inc.
 # All rights reserved.
 #
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 #
+
+
 
 import os
 import argparse
@@ -14,6 +17,7 @@ from src.utils import initialize_exp, bool_flag, attr_flag, check_attr
 from src.model import AutoEncoder, LatentDiscriminator, PatchDiscriminator, Classifier
 from src.training import Trainer
 from src.evaluation import Evaluator
+from src.data_loader import get_loader
 
 
 # parse parameters
@@ -24,7 +28,7 @@ parser.add_argument("--img_sz", type=int, default=256,
                     help="Image sizes (images have to be squared)")
 parser.add_argument("--img_fm", type=int, default=3,
                     help="Number of feature maps (1 for grayscale, 3 for RGB)")
-parser.add_argument("--attr", type=attr_flag, default="Smiling,Male",
+parser.add_argument("--attr", type=attr_flag, default="muster_gebluemt/floral,muster_gestreift",
                     help="Attributes to classify")
 parser.add_argument("--instance_norm", type=bool_flag, default=False,
                     help="Use instance normalization instead of batch normalization")
@@ -86,7 +90,7 @@ parser.add_argument("--ptc_dis_reload", type=str, default="",
                     help="Reload a pretrained patch discriminator")
 parser.add_argument("--clf_dis_reload", type=str, default="",
                     help="Reload a pretrained classifier discriminator")
-parser.add_argument("--eval_clf", type=str, default="",
+parser.add_argument("--eval_clf", type=str, default="models/fashion-classifier.pth",
                     help="Load an external classifier for evaluation")
 parser.add_argument("--debug", type=bool_flag, default=False,
                     help="Debug mode (only load a subset of the whole dataset)")
@@ -109,6 +113,7 @@ assert params.lambda_clf_dis == 0 or params.n_clf_dis > 0
 
 # initialize experiment / load dataset
 logger = initialize_exp(params)
+
 data, attributes = load_images(params)
 train_data = DataSampler(data[0], attributes[0], params)
 valid_data = DataSampler(data[1], attributes[1], params)

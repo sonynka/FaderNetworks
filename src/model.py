@@ -12,7 +12,7 @@ from torch.autograd import Variable
 from torch.nn import functional as F
 
 
-def build_layers(img_sz, img_fm, init_fm, max_fm, n_layers, n_attr, n_skip,
+def build_layers(img_sz, conv_dim, init_fm, max_fm, n_layers, n_attr, n_skip,
                  deconv_method, instance_norm, enc_dropout, dec_dropout):
     """
     Build auto-encoder layers.
@@ -29,20 +29,20 @@ def build_layers(img_sz, img_fm, init_fm, max_fm, n_layers, n_attr, n_skip,
     enc_layers = []
     dec_layers = []
 
-    n_in = img_fm
-    n_out = init_fm
+    dim_in = conv_dim
+    dim_out = dim_in*2
 
     for i in range(n_layers):
         enc_layer = []
         dec_layer = []
         skip_connection = n_layers - (n_skip + 1) <= i < n_layers - 1
-        n_dec_in = n_out + n_attr + (n_out if skip_connection else 0)
-        n_dec_out = n_in
+        n_dec_in = dim_out + n_attr + (dim_out if skip_connection else 0)
+        n_dec_out = dim_in
 
         # encoder layer
-        enc_layer.append(nn.Conv2d(n_in, n_out, 4, 2, 1))
+        enc_layer.append(nn.Conv2d(dim_in, dim_out, 4, 2, 1))
         if i > 0:
-            enc_layer.append(norm_fn(n_out, affine=True))
+            enc_layer.append(norm_fn(dim_out, affine=True))
         enc_layer.append(nn.LeakyReLU(0.2, inplace=True))
         if enc_dropout > 0:
             enc_layer.append(nn.Dropout(enc_dropout))
@@ -66,8 +66,8 @@ def build_layers(img_sz, img_fm, init_fm, max_fm, n_layers, n_attr, n_skip,
             dec_layer.append(nn.Tanh())
 
         # update
-        n_in = n_out
-        n_out = min(2 * n_out, max_fm)
+        dim_in = dim_out
+        dim_out = min(2 * dim_out, max_fm)
         enc_layers.append(nn.Sequential(*enc_layer))
         dec_layers.insert(0, nn.Sequential(*dec_layer))
 
