@@ -49,13 +49,13 @@ logger = create_logger(None)
 ae = torch.load(params.model_path).eval()
 
 # restore main parameters
-params.debug = True
+params.debug = False
 params.batch_size = 32
 params.v_flip = False
 params.h_flip = False
 params.img_sz = ae.img_sz
-params.attr = ae.attr
-params.n_attr = ae.n_attr
+params.attr = list(ae.attr[0])
+params.n_attr = len(params.attr)*2
 if not (len(params.attr) == 1 and params.n_attr == 2):
     raise Exception("The model must use a single boolean attribute only.")
 
@@ -63,12 +63,13 @@ if not (len(params.attr) == 1 and params.n_attr == 2):
 data, attributes = load_images(params)
 test_data = DataSampler(data[2], attributes[2], params)
 
-
 def get_interpolations(ae, images, attributes, params):
     """
     Reconstruct images / create interpolations
     """
     assert len(images) == len(attributes)
+    print('attributes size', attributes.size())
+    print('images size', images.size())
     enc_outputs = ae.encode(images)
 
     # interpolation values

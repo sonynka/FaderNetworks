@@ -17,7 +17,7 @@ logger = getLogger()
 
 
 AVAILABLE_ATTR = [
-    "muster_gebluemt/floral", "muster_gestreift"
+    "muster_gestreift"
 ]
 
 DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')

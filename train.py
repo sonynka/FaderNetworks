@@ -78,7 +78,7 @@ parser.add_argument("--dis_optimizer", type=str, default="adam,lr=0.0002",
                     help="Discriminator optimizer (SGD / RMSprop / Adam, etc.)")
 parser.add_argument("--clip_grad_norm", type=float, default=5,
                     help="Clip gradient norms (0 to disable)")
-parser.add_argument("--n_epochs", type=int, default=1000,
+parser.add_argument("--n_epochs", type=int, default=50,
                     help="Total number of epochs")
 parser.add_argument("--epoch_size", type=int, default=50000,
                     help="Number of samples per epoch")
