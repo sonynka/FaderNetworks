@@ -27,7 +27,7 @@ parser.add_argument("--img_sz", type=int, default=256,
                     help="Image sizes (images have to be squared)")
 parser.add_argument("--img_fm", type=int, default=3,
                     help="Number of feature maps (1 for grayscale, 3 for RGB)")
-parser.add_argument("--attr", type=attr_flag, default="muster_gebluemt/floral,muster_gestreift",
+parser.add_argument("--attr", type=attr_flag, default="*",
                     help="Attributes to classify")
 parser.add_argument("--init_fm", type=int, default=32,
                     help="Number of initial filters in the encoder")

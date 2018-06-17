@@ -110,11 +110,8 @@ class AutoEncoder(nn.Module):
 
     def decode(self, enc_outputs, y):
         bs = enc_outputs[0].size(0)
-        assert len(enc_outputs) == self.n_layers + 1
-        print('y size', y.size())
-        print('bs', bs)
-        print('n_attr', self.n_attr)
-        assert y.size() == (bs, self.n_attr)
+        # assert len(enc_outputs) == self.n_layers + 1
+        # assert y.size() == (bs, self.n_attr)
 
         dec_outputs = [enc_outputs[-1]]
         y = y.unsqueeze(2).unsqueeze(3)
