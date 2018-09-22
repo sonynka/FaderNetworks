@@ -15,12 +15,12 @@ from logging import getLogger
 
 logger = getLogger()
 
-
 AVAILABLE_ATTR = [
     "muster_gestreift", "muster_gebluemt/floral"
 ]
 
-DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
+DATA_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data/')
+print('data_path', DATA_PATH)
 
 
 def log_attributes_stats(train_attributes, valid_attributes, test_attributes, params):
@@ -55,6 +55,9 @@ def load_images(params):
         for i in range(n_cat):
             attrs.append(torch.FloatTensor((attributes[name] == i).astype(np.float32)))
     attributes = torch.cat([x.unsqueeze(1) for x in attrs], 1)
+
+    print('attributes size', attributes.size())
+    print('images num', len(images))
     # split train / valid / test
     if params.debug:
         train_index = 10000
@@ -64,6 +67,9 @@ def load_images(params):
         train_index = 8000
         valid_index = 8000 + 1000
         test_index = len(images)
+        print('train_index', train_index)
+        print('valid_index', valid_index)
+        print('test_index', test_index)
     train_images = images[:train_index]
     valid_images = images[train_index:valid_index]
     test_images = images[valid_index:test_index]

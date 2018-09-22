@@ -49,7 +49,7 @@ def build_layers(img_sz, img_fm, init_fm, max_fm, n_layers, n_attr, n_skip,
 
         # decoder layer
         if deconv_method == 'upsampling':
-            dec_layer.append(nn.UpsamplingNearest2d(scale_factor=2))
+            dec_layer.append(nn.Upsample(scale_factor=2))
             dec_layer.append(nn.Conv2d(n_dec_in, n_dec_out, 3, 1, 1))
         elif deconv_method == 'convtranspose':
             dec_layer.append(nn.ConvTranspose2d(n_dec_in, n_dec_out, 4, 2, 1, bias=False))
